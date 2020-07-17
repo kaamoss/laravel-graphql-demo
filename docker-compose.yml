@@ -1,0 +1,56 @@
+version: '2.2'
+services:
+
+  # The Application
+  foo-api-app:
+    container_name: foo-api-app
+    build:
+      context: ./
+      dockerfile: app.dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www:delegated
+    environment:
+      - "DB_PORT=3306"
+      - "DB_HOST=foo-mysql"
+      - "PHP_XDEBUG_ENABLED=1"
+      - "XDEBUG_CONFIG=remote_host=10.254.254.254"
+      - "PHP_IDE_CONFIG=serverName=api.foo.com"
+
+  # The Web Server
+  foo-api-web:
+    container_name: foo-api-web
+    build:
+      context: ./
+      dockerfile: web.dockerfile
+    working_dir: /var/www
+    volumes_from:
+      - foo-api-app
+    ports:
+      - 8080:80
+
+  foo-mysql:
+    image: mysql:5.6
+    hostname: foo-mysql
+    container_name: foo-mysql
+    volumes:
+      - db_data:/var/lib/mysql:delegated
+      - ./docker-configs/mysql:/etc/mysql/conf.d:delegated
+    restart: always
+    ports:
+      - "3306:3306" # mysql connection port
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: foo
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+
+  foo-redis:
+    image: phpdockerio/redis:latest
+    container_name: foo-redis
+    hostname: foo-redis
+
+volumes:
+  db_data: {}
+
+
