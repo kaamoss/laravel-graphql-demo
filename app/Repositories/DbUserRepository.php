@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Entities\User;
 use App\Interfaces\Repositories\IUserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -21,7 +22,9 @@ class DbUserRepository extends EntityRepository implements IUserRepository {
         $dql = "SELECT u FROM App\\Entities\\User u ORDER BY u.lastName, u.firstName";
 
         $users = $this->entityManager->createQuery($dql)->getResult();
-        return $users;
+        dd($users);
+        
+        return new ArrayCollection($users);
     }
 
     public function getUserById($id): ?User {

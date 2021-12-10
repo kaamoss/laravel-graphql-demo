@@ -46,7 +46,7 @@ services:
       MYSQL_PASSWORD: dev
 
   foo-redis:
-    image: phpdockerio/redis:latest
+    image: redis:alpine
     container_name: foo-redis
     hostname: foo-redis
 

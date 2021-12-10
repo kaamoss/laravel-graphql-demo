@@ -39,6 +39,26 @@ class User {
     protected $lastName;
 
     /**
+     * @var Account|null
+     * @ORM\ManyToOne(targetEntity="Account")
+     * @ORM\JoinColumn(name="owned_by_account_id", referencedColumnName="id", nullable=false)
+     */
+    protected $owningAccount;
+
+    /**
+     * @var ArrayCollection|Membership[]
+     * One User has many members. This is the inverse side.
+     * @ORM\OneToMany(targetEntity="Membership", mappedBy="user", fetch="EAGER")
+     */
+    protected $memberships;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", name="email_verified_at", nullable=true)
+     */
+    protected $emailVerifiedAt;
+
+    /**
      * @var \DateTime
      * @ORM\Column(type="datetime", name="created_at", nullable=false)
      */
@@ -54,6 +74,7 @@ class User {
         if($id > 0) {
             $this->id = $id;
         }
+        $this->memberships          = new ArrayCollection();
     }
 
     /**
@@ -143,5 +164,54 @@ class User {
     {
         $this->updatedAt = $updatedAt;
     }
+
+    /**
+     * @return DateTime
+     */
+    public function getEmailVerifiedAt(): DateTime
+    {
+        return $this->emailVerifiedAt;
+    }
+
+    /**
+     * @param DateTime $emailVerifiedAt
+     */
+    public function setEmailVerifiedAt(DateTime $emailVerifiedAt): void
+    {
+        $this->emailVerifiedAt = $emailVerifiedAt;
+    }
+
+    /**
+     * @return Account|null
+     */
+    public function getOwningAccount(): ?Account
+    {
+        return $this->owningAccount;
+    }
+
+    /**
+     * @param Account|null $owningAccount
+     */
+    public function setOwningAccount(?Account $owningAccount): void
+    {
+        $this->owningAccount = $owningAccount;
+    }
+
+    /**
+     * @return Membership[]|ArrayCollection
+     */
+    public function getMemberships()
+    {
+        return $this->memberships;
+    }
+
+    /**
+     * @param Membership[]|ArrayCollection $memberships
+     */
+    public function setMemberships($memberships): void
+    {
+        $this->memberships = $memberships;
+    }
+
 
 }

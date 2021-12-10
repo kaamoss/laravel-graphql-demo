@@ -3,6 +3,7 @@
 
 namespace App\GraphQL\Query;
 
+use App\Interfaces\Repositories\IUserRepository;
 use GraphQL;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
@@ -12,10 +13,11 @@ class UsersQuery extends Query {
     protected $attributes = [
         'name' => 'users',
     ];
-    protected $locationSvc;
+    protected $userRepo;
 
-    public function __construct()
+    public function __construct(IUserRepository $userRepo)
     {
+        $this->userRepo = $userRepo;
         //TODO: inject services or repositories
     }
 
@@ -36,6 +38,7 @@ class UsersQuery extends Query {
 
     public function resolve($root, $args, $context, ResolveInfo $info)
     {
+        dd($this->userRepo->getAllUsers());
         //$serviceContext = $this->getServiceContext($root, $args, $context, $info);
         $page = null;
         $numPerPage = null;

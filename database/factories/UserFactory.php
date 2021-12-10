@@ -17,12 +17,29 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(\App\Entities\User::class, function (Faker $faker, array $attributes) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
+        'firstName' => $attributes['firstName'] ?? $faker->firstName,
+        'lastName' => $attributes['lastName'] ?? $faker->lastName,
+        'email' => $attributes['email'] ?? $faker->unique()->safeEmail,
+        'owningAccount'=>$attributes['account'],
+        'emailVerifiedAt' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
+        'createdAt' => now(),
+        'updatedAt' => now(),
     ];
 });
+
+$factory->define(\App\Entities\Account::class, function (Faker $faker, array $attributes) {
+    $props = [
+        'title' => $attributes['title'] ?? $faker->company,
+        'createdAt' => now(),
+        'updatedAt' => now(),
+    ];
+    if(isset($attributes['parentAccount'])) {
+        $props['parentAccount'] = $attributes['parentAccount'];
+    }
+    return $props;
+});
+
+
