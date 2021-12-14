@@ -1,3 +1,5 @@
+/app/Generated/*
+!/app/Generated/.gitkeep
 /node_modules
 /public/hot
 /public/storage

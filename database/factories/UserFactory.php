@@ -33,13 +33,25 @@ $factory->define(\App\Entities\User::class, function (Faker $faker, array $attri
 $factory->define(\App\Entities\Account::class, function (Faker $faker, array $attributes) {
     $props = [
         'title' => $attributes['title'] ?? $faker->company,
+        'isParent' => $attributes['isParent'] ?? false,
         'createdAt' => now(),
         'updatedAt' => now(),
     ];
     if(isset($attributes['parentAccount'])) {
         $props['parentAccount'] = $attributes['parentAccount'];
+        $props['isParent'] = false;
     }
     return $props;
 });
 
+$factory->define(\App\Entities\Membership::class, function (Faker $fake, array $attributes) {
+   $props = [
+       'user'=> $attributes['user'],
+       'account' => $attributes['account'],
+       'createdAt' => now(),
+       'updatedAt' => now(),
+   ];
+
+   return $props;
+});
 

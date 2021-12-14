@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface IUserRepository
 {
+    public function getAllAccounts(): Collection;
+
     public function getAllUsers(): Collection;
 
     public function getUserById($id): ?User;

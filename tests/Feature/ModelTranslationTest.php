@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
-class ModelTranslationTest
+use Tests\TestCase;
+
+class ModelTranslationTest extends TestCase
 {
 
 }

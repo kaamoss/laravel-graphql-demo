@@ -2,29 +2,34 @@
 
 namespace App\Entities;
 
+include_once(__DIR__.'/../Annotations/ModelMapping.php');
+
+use App\Annotations\ModelMapping as ModelMapping;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Models\Account as AccountModel;
 
 /**
+ * @ModelMapping(modelClass=AccountModel::class)
  * @ORM\Entity
  * @ORM\Table(name="account")
  */
-class Account
+class Account extends BaseEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\Column(type="integer", name="id")
-     */
-    protected $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", name="title", nullable=false)
      */
     protected $title;
+
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", name="is_parent", nullable=false)
+     */
+    protected $isParent;
 
     /**
      * @var User|null
@@ -60,32 +65,13 @@ class Account
      */
     protected $members;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime", name="created_at", nullable=false)
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime", name="updated_at", nullable=false)
-     */
-    protected $updatedAt;
-
     public function __construct(?int $id = null) {
         if($id > 0) {
             $this->id = $id;
         }
+        $this->isParent = false;
         $this->childAccounts    = new ArrayCollection();
         $this->members          = new ArrayCollection();
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**
@@ -185,39 +171,5 @@ class Account
     {
         $this->members = $members;
     }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt(DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt(): DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTime $updatedAt
-     */
-    public function setUpdatedAt(DateTime $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-
 
 }

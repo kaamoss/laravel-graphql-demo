@@ -18,12 +18,19 @@ class DbUserRepository extends EntityRepository implements IUserRepository {
         parent::__construct($this->entityManager, $this->entityManager->getClassMetadata(User::class));
     }
 
+    public function getAllAccounts(): Collection {
+        $dql = "SELECT a FROM App\\Entities\\Account a ORDER BY a.title";
+
+        $accounts = $this->entityManager->createQuery($dql)->getResult();
+
+        return new ArrayCollection($accounts);
+    }
+
     public function getAllUsers(): Collection {
         $dql = "SELECT u FROM App\\Entities\\User u ORDER BY u.lastName, u.firstName";
 
         $users = $this->entityManager->createQuery($dql)->getResult();
-        dd($users);
-        
+
         return new ArrayCollection($users);
     }
 

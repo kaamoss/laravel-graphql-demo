@@ -32,6 +32,7 @@ class CreateBaseTables extends Migration
             $table->string('title', 190);
             $table->bigInteger('parent_account_id')->unsigned()->nullable()->default(null);
             $table->bigInteger('primary_user_id')->unsigned()->nullable()->default(null);
+            $table->boolean('is_parent')->default(false);
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
 
